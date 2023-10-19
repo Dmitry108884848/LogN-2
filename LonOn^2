@@ -1,0 +1,39 @@
+#include
+#include
+#include
+
+// Поиск числа в массиве (O(n^2))
+bool searchOn2(const std::vector& arr, int num) {
+for (int i = 0; i < arr.size(); ++i) {
+for (int j = 0; j < arr.size(); ++j) {
+if (i != j && arr[i] == arr[j]) {
+return true;
+}
+}
+}
+return false;
+}
+
+// Поиск числа в отсортированном массиве (O(log n))
+bool searchLogOn(const std::vector& arr, int num) {
+int low = 0;
+int high = arr.size() - 1;
+
+while (low <= high) {
+int mid = (low + high) / 2;
+
+if (arr[mid] == num) {
+return true;
+}
+
+if (arr[mid] < num) {
+low = mid + 1;
+}
+else {
+high = mid - 1;
+}
+}
+
+return false;
+}
+
