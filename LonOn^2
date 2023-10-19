@@ -1,39 +1,80 @@
-#include
-#include
-#include
+#include <iostream>
+#include <cmath>
+#include <algorithm>
 
-// Поиск числа в массиве (O(n^2))
-bool searchOn2(const std::vector& arr, int num) {
-for (int i = 0; i < arr.size(); ++i) {
-for (int j = 0; j < arr.size(); ++j) {
-if (i != j && arr[i] == arr[j]) {
-return true;
-}
-}
-}
-return false;
-}
-
-// Поиск числа в отсортированном массиве (O(log n))
-bool searchLogOn(const std::vector& arr, int num) {
-int low = 0;
-int high = arr.size() - 1;
-
-while (low <= high) {
-int mid = (low + high) / 2;
-
-if (arr[mid] == num) {
-return true;
+// Реализация поиска числа в массиве за O(n^2)
+bool searchOn2(int arr[], int size, int num) {
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            if (arr[i] == num || arr[j] == num) {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
-if (arr[mid] < num) {
-low = mid + 1;
-}
-else {
-high = mid - 1;
-}
+// Реализация поиска числа в массиве за O(logn)
+bool searchLogN(int arr[], int size, int num) {
+    int left = 0;
+    int right = size - 1;
+    
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        
+        if (arr[mid] == num) {
+            return true;
+        }
+        
+        if (arr[mid] < num) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    
+    return false;
 }
 
-return false;
+// Реализация простого поиска числа в массиве за O(n)
+bool searchOnN(int arr[], int size, int num) {
+    for (int i = 0; i < size; i++) {
+        if (arr[i] == num) {
+            return true;
+        }
+    }
+    return false;
 }
-
+ 
+int main() {
+    int arr[] = {1, 5, 2, 7, 4}; // Пример массива
+    int size = sizeof(arr) / sizeof(arr[0]);
+    int num = 7; // Число, которое ищем
+ 
+    // Проверка первого способа - O(n^2)
+    bool found = searchOn2(arr, size, num);
+    if (found) {
+        std::cout << "Число найдено (On^2)" << std::endl;
+    } else {
+        std::cout << "Число не найдено (On^2)" << std::endl;
+    }
+ 
+    // Проверка второго способа - O(logn)
+    std::sort(arr, arr + size); // Сортировка массива перед бинарным поиском
+    found = searchLogN(arr, size, num);
+    if (found) {
+        std::cout << "Число найдено (LogOn)" << std::endl;
+    } else {
+        std::cout << "Число не найдено (LogOn)" << std::endl;
+    }
+ 
+    // Проверка третьего способа - O(n)
+    found = searchOnN(arr, size, num);
+    if (found) {
+        std::cout << "Число найдено (On+n)" << std::endl;
+    } else {
+        std::cout << "Число не найдено (On+n)" << std::endl;
+    }
+ 
+    return 0;
+}
